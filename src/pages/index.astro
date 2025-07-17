@@ -1,5 +1,5 @@
 ---
-import "../styles/global.css";
+import "@/styles/global.css";
 ---
 
 <html lang="da">
@@ -13,10 +13,12 @@ import "../styles/global.css";
     <header class="bg-white sticky top-0 z-50 shadow-sm">
       <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
         <img src="/images/mkskilt.png" alt="Gladbilist logo" class="h-12 w-auto" />
-        <nav class="space-x-6 text-sm sm:text-base">
-          <a href="#kurser" class="hover:text-blue-600 font-medium">Kurser</a>
-          <a href="/kontakt" class="hover:text-blue-600 font-medium">Kontakt</a>
-        </nav>
+        <nav class="space-x-4 text-sm sm:text-base">
+  <a href="#kurser" class="text-gray-700 hover:text-blue-600 font-medium transition">Kurser</a>
+  <a href="#priser" class="text-gray-700 hover:text-blue-600 font-medium transition">Priser</a>
+  <a href="/trailer" class="text-gray-700 hover:text-blue-600 font-medium transition">Trailer</a>
+  <a href="/kontakt" class="text-gray-700 hover:text-blue-600 font-medium transition">Kontakt</a>
+</nav>
       </div>
     </header>
 
@@ -28,10 +30,10 @@ import "../styles/global.css";
       </div>
       <div class="absolute inset-0 -z-10 opacity-15 bg-[url('/images/mkskilt.png')] bg-contain bg-center bg-no-repeat blur-sm"></div>
 <section class="max-w-xl mx-auto text-center my-12 px-4">
-  <h2 class="text-2xl font-bold mb-4">🎵 Velkomstsang</h2>
+  <h2 class="text-2xl font-bold mb-4">🎵 Det helt gak</h2>
 
   <audio id="audioPlayer" preload="auto">
-    <source src="/audio/Intro.mp3" type="audio/mpeg" />
+    <source src="/audio/Intro2.mp3" type="audio/mpeg" />
     Din browser understøtter ikke lydafspilning.
   </audio>
 
@@ -115,10 +117,27 @@ import "../styles/global.css";
         <h2 class="text-3xl sm:text-4xl font-bold text-center text-blue-800 mb-12">Vores Kurser</h2>
         <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <!-- Personbil -->
-          <div class="bg-blue-50 hover:bg-blue-100 rounded-xl p-6 shadow hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-            <h3 class="text-xl font-semibold text-blue-700">Personbil (B)</h3>
-            <p class="text-gray-600 mt-2">Få dit kørekort til personbil med erfarne undervisere og moderne køretøjer.</p>
-          </div>
+<div class="bg-blue-50 hover:bg-blue-100 rounded-xl p-6 shadow hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+  <h3 class="text-xl font-semibold text-blue-700 flex justify-between items-center">
+    Personbil (B)
+    <span class="bg-green-600 text-white text-sm px-2 py-1 rounded font-medium">15.900 kr.</span>
+  </h3>
+  <p class="text-gray-600 mt-2">Få dit kørekort til personbil med erfarne undervisere og moderne køretøjer.</p>
+</div>
+
+<!-- Trailer -->
+<a href="/trailer" class="relative block bg-blue-50 hover:bg-blue-100 rounded-xl p-6 shadow hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+  <!-- Pris badge -->
+  <span class="absolute top-4 right-4 bg-green-600 text-white text-sm font-semibold px-3 py-1 rounded-full shadow">
+    5.100 kr.
+  </span>
+
+  <!-- Indhold -->
+  <h3 class="text-xl font-semibold text-blue-700">Trailer (B/E)</h3>
+  <p class="text-gray-600 mt-2">Få tilladelse til at køre med trailer hurtigt og effektivt.</p>
+</a>
+
+
           <!-- Generhverv -->
           <div class="bg-blue-50 hover:bg-blue-100 rounded-xl p-6 shadow hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
             <h3 class="text-xl font-semibold text-blue-700">Generhverv</h3>
@@ -129,10 +148,7 @@ import "../styles/global.css";
             <h3 class="text-xl font-semibold text-blue-700">MC / Motorcykel</h3>
             <p class="text-gray-600 mt-2">Tag motorcykelkørekortet med fokus på sikkerhed og teknik.</p>
           </div>
-          <!-- Trailer -->
-          <div class="bg-blue-50 hover:bg-blue-100 rounded-xl p-6 shadow hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-            <h3 class="text-xl font-semibold text-blue-700">Trailer (B/E)</h3>
-            <p class="text-gray-600 mt-2">Få tilladelse til at køre med trailer hurtigt og effektivt.</p>
+</a>
           </div>
         </div>
       </div>
