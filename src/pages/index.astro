@@ -14,11 +14,11 @@ import "@/styles/global.css";
       <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
         <img src="/images/mkskilt.png" alt="Gladbilist logo" class="h-12 w-auto" />
         <nav class="space-x-4 text-sm sm:text-base">
-  <a href="#kurser" class="text-gray-700 hover:text-blue-600 font-medium transition">Kurser</a>
-  <a href="#priser" class="text-gray-700 hover:text-blue-600 font-medium transition">Priser</a>
-  <a href="/trailer" class="text-gray-700 hover:text-blue-600 font-medium transition">Trailer</a>
-  <a href="/kontakt" class="text-gray-700 hover:text-blue-600 font-medium transition">Kontakt</a>
-</nav>
+          <a href="#kurser" class="text-gray-700 hover:text-blue-600 font-medium transition">Kurser</a>
+          <a href="#priser" class="text-gray-700 hover:text-blue-600 font-medium transition">Priser</a>
+          <a href="/trailer" class="text-gray-700 hover:text-blue-600 font-medium transition">Trailer</a>
+          <a href="/kontakt" class="text-gray-700 hover:text-blue-600 font-medium transition">Kontakt</a>
+        </nav>
       </div>
     </header>
 
@@ -29,126 +29,102 @@ import "@/styles/global.css";
         <p class="text-lg sm:text-xl text-gray-700 max-w-2xl mx-auto">Professionelle køretimer for alle – tryghed, erfaring og personlig undervisning med erfarne instruktører.</p>
       </div>
       <div class="absolute inset-0 -z-10 opacity-15 bg-[url('/images/mkskilt.png')] bg-contain bg-center bg-no-repeat blur-sm"></div>
-<section class="max-w-xl mx-auto text-center my-12 px-4">
-  <h2 class="text-2xl font-bold mb-4">🎵 AI 🎵</h2>
 
-  <audio id="audioPlayer" preload="auto">
-    <source src="/audio/intro2.mp3" type="audio/mpeg" />
-    Din browser understøtter ikke lydafspilning.
-  </audio>
+      <!-- Velkomstsang -->
+      <section class="max-w-xl mx-auto text-center my-12 px-4">
+        <h2 class="text-2xl font-bold mb-4">🎵 AI 🎵</h2>
+        <audio id="audioPlayer" preload="auto">
+          <source src="/audio/intro2.mp3" type="audio/mpeg" />
+          Din browser understøtter ikke lydafspilning.
+        </audio>
 
-  <div class="flex flex-col items-center gap-4">
-    <!-- Play/Stop knap -->
-    <button id="togglePlay"
-      class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-full shadow transition duration-300">
-      ▶️ Afspil
-    </button>
+        <div class="flex flex-col items-center gap-4">
+          <button id="togglePlay"
+            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-full shadow transition duration-300">
+            ▶️ Afspil
+          </button>
+          <input type="range" id="seekBar" value="0" min="0" step="1"
+            class="w-full max-w-md accent-blue-600 cursor-pointer" />
+          <div id="timeDisplay" class="text-sm text-gray-700 font-mono">00:00 / 00:00</div>
+        </div>
 
-    <!-- Progress bar -->
-    <input type="range" id="seekBar" value="0" min="0" step="1"
-      class="w-full max-w-md accent-blue-600 cursor-pointer" />
+        <script type="module">
+          const audio = document.getElementById("audioPlayer");
+          const playBtn = document.getElementById("togglePlay");
+          const seekBar = document.getElementById("seekBar");
+          const timeDisplay = document.getElementById("timeDisplay");
+          let isPlaying = false;
 
-    <!-- Tidstæller -->
-    <div id="timeDisplay" class="text-sm text-gray-700 font-mono">
-      00:00 / 00:00
-    </div>
-  </div>
+          const formatTime = (secs) => {
+            const min = Math.floor(secs / 60);
+            const sec = Math.floor(secs % 60);
+            return `${min.toString().padStart(2, "0")}:${sec.toString().padStart(2, "0")}`;
+          };
 
-  <script type="module">
-    const audio = document.getElementById("audioPlayer");
-    const playBtn = document.getElementById("togglePlay");
-    const seekBar = document.getElementById("seekBar");
-    const timeDisplay = document.getElementById("timeDisplay");
+          audio.addEventListener("loadedmetadata", () => {
+            seekBar.max = Math.floor(audio.duration);
+            timeDisplay.textContent = `00:00 / ${formatTime(audio.duration)}`;
+          });
 
-    let isPlaying = false;
+          playBtn.addEventListener("click", () => {
+            if (!isPlaying) {
+              audio.play().then(() => {
+                playBtn.textContent = "⏸️ Stop";
+                isPlaying = true;
+              }).catch(err => console.error("Fejl ved afspilning:", err));
+            } else {
+              audio.pause();
+              playBtn.textContent = "▶️ Afspil";
+              isPlaying = false;
+            }
+          });
 
-    // Format seconds to mm:ss
-    const formatTime = (secs) => {
-      const min = Math.floor(secs / 60);
-      const sec = Math.floor(secs % 60);
-      return `${min.toString().padStart(2, "0")}:${sec.toString().padStart(2, "0")}`;
-    };
+          audio.addEventListener("timeupdate", () => {
+            seekBar.value = Math.floor(audio.currentTime);
+            timeDisplay.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+          });
 
-    // Opdater længde og maks på bar når metadata er loadet
-    audio.addEventListener("loadedmetadata", () => {
-      seekBar.max = Math.floor(audio.duration);
-      timeDisplay.textContent = `00:00 / ${formatTime(audio.duration)}`;
-    });
+          seekBar.addEventListener("input", () => {
+            audio.currentTime = seekBar.value;
+          });
 
-    // Knap: Play / Stop
-    playBtn.addEventListener("click", () => {
-      if (!isPlaying) {
-        audio.play().then(() => {
-          playBtn.textContent = "⏸️ Stop";
-          isPlaying = true;
-        }).catch(err => {
-          console.error("Fejl ved afspilning:", err);
-        });
-      } else {
-        audio.pause();
-        playBtn.textContent = "▶️ Afspil";
-        isPlaying = false;
-      }
-    });
-
-    // Opdater seekbar og tid under afspilning
-    audio.addEventListener("timeupdate", () => {
-      seekBar.value = Math.floor(audio.currentTime);
-      timeDisplay.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
-    });
-
-    // Brugeren ændrer bar
-    seekBar.addEventListener("input", () => {
-      audio.currentTime = seekBar.value;
-    });
-
-    // Reset når sang slutter
-    audio.addEventListener("ended", () => {
-      playBtn.textContent = "▶️ Afspil";
-      isPlaying = false;
-    });
-  </script>
-</section>
+          audio.addEventListener("ended", () => {
+            playBtn.textContent = "▶️ Afspil";
+            isPlaying = false;
+          });
+        </script>
+      </section>
     </section>
 
-    <!-- Kurser Section -->
+    <!-- Kurser -->
     <section id="kurser" class="py-24 bg-white">
       <div class="max-w-7xl mx-auto px-6">
         <h2 class="text-3xl sm:text-4xl font-bold text-center text-blue-800 mb-12">Vores Kurser</h2>
         <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <!-- Personbil -->
-<div class="bg-blue-50 hover:bg-blue-100 rounded-xl p-6 shadow hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-  <h3 class="text-xl font-semibold text-blue-700 flex justify-between items-center">
-    Personbil (B)
-    <span class="bg-green-600 text-white text-sm px-2 py-1 rounded font-medium">15.900 kr.</span>
-  </h3>
-  <p class="text-gray-600 mt-2">Få dit kørekort til personbil med erfarne undervisere og moderne køretøjer.</p>
-</div>
+          <a href="/" class="relative block bg-blue-50 hover:bg-blue-100 rounded-xl p-6 shadow hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+            <span class="absolute top-4 right-4 bg-green-600 text-white text-sm font-semibold px-3 py-1 rounded-full shadow">15.900 kr.</span>
+            <h3 class="text-xl font-semibold text-blue-700">Personbil (B)</h3>
+            <p class="text-gray-600 mt-2">Få dit kørekort med erfarne undervisere og moderne biler.</p>
+          </a>
 
-<!-- Trailer -->
-<a href="/trailer" class="relative block bg-blue-50 hover:bg-blue-100 rounded-xl p-6 shadow hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-  <!-- Pris badge -->
-  <span class="absolute top-4 right-4 bg-green-600 text-white text-sm font-semibold px-3 py-1 rounded-full shadow">
-    5.100 kr.
-  </span>
-
-  <!-- Indhold -->
-  <h3 class="text-xl font-semibold text-blue-700">Trailer (B/E)</h3>
-  <p class="text-gray-600 mt-2">Få tilladelse til at køre med trailer hurtigt og effektivt.</p>
-</a>
-
+          <!-- Trailer -->
+          <a href="/trailer" class="relative block bg-blue-50 hover:bg-blue-100 rounded-xl p-6 shadow hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+            <span class="absolute top-4 right-4 bg-green-600 text-white text-sm font-semibold px-3 py-1 rounded-full shadow">5.100 kr.</span>
+            <h3 class="text-xl font-semibold text-blue-700">Trailer (B/E)</h3>
+            <p class="text-gray-600 mt-2">Få tilladelse til at køre med trailer hurtigt og effektivt.</p>
+          </a>
 
           <!-- Generhverv -->
           <div class="bg-blue-50 hover:bg-blue-100 rounded-xl p-6 shadow hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
             <h3 class="text-xl font-semibold text-blue-700">Generhverv</h3>
-            <p class="text-gray-600 mt-2">Har du mistet dit kort? Vi hjælper dig trygt gennem generhvervelse.</p>
+            <p class="text-gray-600 mt-2">Mistet kortet? Vi guider dig trygt gennem generhvervelse.</p>
           </div>
+
           <!-- MC -->
           <div class="bg-blue-50 hover:bg-blue-100 rounded-xl p-6 shadow hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
             <h3 class="text-xl font-semibold text-blue-700">MC / Motorcykel</h3>
-            <p class="text-gray-600 mt-2">Tag motorcykelkørekortet med fokus på sikkerhed og teknik.</p>
-          </div>
-</a>
+            <p class="text-gray-600 mt-2">Tag MC-kort med fokus på sikkerhed og teknik.</p>
           </div>
         </div>
       </div>
